@@ -125,7 +125,7 @@ export default function StickyHeadTable() {
 
   const handleDelete = async () => {
     await fetch(
-      `https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/tickets/${deleteId}`,
+      `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/${deleteId}`,
       {
         method: "DELETE",
         headers: {
@@ -145,11 +145,11 @@ export default function StickyHeadTable() {
 
   // React.useEffect(() => {
   //   // const result = await axios(
-  //   //   "https://comp229-group3-backend.azurewebsites.net/api/v1/incidentTicket/tickets"
+  //   //   "https://comp229-group3-w2023.azurewebsites.net/api/v1/incidentTicket/tickets"
   //   // );
 
   //   async function fetchTickets() {
-  //     let res = await fetch("https://comp229-group3-backend.azurewebsites.net/api/v1/incidentTicket/tickets")
+  //     let res = await fetch("https://comp229-group3-w2023.azurewebsites.net/api/v1/incidentTicket/tickets")
   //       .then((response) => response.json())
   //       .then((result) => result)
   //       .catch((error) => console.log("error", error));
@@ -161,7 +161,7 @@ export default function StickyHeadTable() {
 
   //   fetchTickets();
   //   // console.log(result);
-  //   // await fetch("https://comp229-group3-backend.azurewebsites.net/api/users/", {
+  //   // await fetch("https://comp229-group3-w2023.azurewebsites.net/api/users/", {
   //   //     method: "POST",
   //   //     body: JSON.stringify({
   //   //       incidentDescription: data.get("incidentDescription"),

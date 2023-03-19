@@ -170,7 +170,7 @@ export async function action({ request }) {
   const formData = await request.formData();
   const postData = Object.fromEntries(formData); // { body:... , author:... }
   await fetch(
-    "https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/create-ticket",
+    "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/create-ticket",
     {
       method: "POST",
       body: JSON.stringify(postData),

@@ -12,12 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  Form,
-  Link,
-  redirect,
-  useLoaderData,
-} from "react-router-dom";
+import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import * as React from "react";
 // import Box from '@mui/material/Box';
 import InputLabel from "@mui/material/InputLabel";
@@ -184,8 +179,8 @@ export default App;
 
 export async function loader({ params }) {
   const response = await fetch(
-    // "https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/tickets/64152cbd8992d7999a4d4bd6"
-    "https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/tickets/" +
+    // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/64152cbd8992d7999a4d4bd6"
+    "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/" +
       params.id
   );
 
@@ -199,10 +194,10 @@ export async function action({ request }) {
 
   console.log(postData);
   console.log(
-    `https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
+    `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
   );
   await fetch(
-    `https://comp229-group3-backend.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
+    `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
     {
       method: "PATCH",
       body: JSON.stringify(postData),
