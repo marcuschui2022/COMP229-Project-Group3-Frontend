@@ -29,6 +29,11 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <LandingPage /> },
       { path: "/dashboard", element: <Dashboard />, loader: ticketsLoader },
+      {
+        path: "/create-ticket",
+        element: <CreateTicket />,
+        action: postNewTicket,
+      },
     ],
   },
 ]);
