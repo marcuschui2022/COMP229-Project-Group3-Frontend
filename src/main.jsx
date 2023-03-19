@@ -34,6 +34,12 @@ const router = createBrowserRouter([
         element: <CreateTicket />,
         action: postNewTicket,
       },
+      {
+        path: "/update-ticket/:id",
+        element: <UpdateTicket />,
+        loader: ticketByidLoader,
+        action: updateTicketById,
+      },
     ],
   },
 ]);
