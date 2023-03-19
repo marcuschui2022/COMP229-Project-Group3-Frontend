@@ -8,6 +8,13 @@ import "@fontsource/roboto/700.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import LandingPage from "./routes/LandingPage";
+import Dashboard, { loader as ticketsLoader } from "./routes/Dashboard";
+import CreateTicket, { action as postNewTicket } from "./routes/CreateTicket";
+import UpdateTicket, {
+  loader as ticketByidLoader,
+  action as updateTicketById,
+} from "./routes/UpdateTicket";
+// import ErrorPage from "./error-page";
 
 // create custom theme
 const theme = createTheme({
@@ -17,6 +24,49 @@ const theme = createTheme({
     },
   },
 });
+
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <LandingPage />,
+//     errorElement: <ErrorPage />,
+//   },
+//   {
+//     path: "/dashboard",
+//     element: <Dashboard />,
+//     errorElement: <ErrorPage />,
+//   },
+//   {
+//     path: "/createticket",
+//     element: <CreateTicket />,
+//     errorElement: <ErrorPage />,
+//   },
+//   {
+//     path: "/updateticket/:id",
+//     element: <UpdateTicket />,
+//     errorElement: <ErrorPage />,
+//   },
+// ]);
+
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <LandingPage />,
+//     children: [
+//       {
+//         path: "/Dashboard",
+//         element: <Dashboard />,
+//         loader: ticketsLoader,
+//         // children: [
+//         //   {
+//         //     path: "/create-ticket",
+//         //     element: <CreateTicket />,
+//         //   },
+//         // ],
+//       },
+//     ],
+//   },
+// ]);
 
 const router = createBrowserRouter([
   {
