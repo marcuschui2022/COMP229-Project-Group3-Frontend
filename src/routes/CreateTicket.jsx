@@ -1,13 +1,8 @@
-import NavBar from "../components/NavBar";
-
-import Tickets from "../components/Tickets";
 import Container from "@mui/material/Container";
 import {
   Avatar,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   //   InputLabel,
   //   MenuItem,
@@ -15,8 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Form, Link, redirect, useSubmit } from "react-router-dom";
-import { Copyright } from "@mui/icons-material";
+import { Form, Link, redirect } from "react-router-dom";
 import * as React from "react";
 // import Box from '@mui/material/Box';
 import InputLabel from "@mui/material/InputLabel";

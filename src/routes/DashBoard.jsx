@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import Tickets from "../components/Tickets";
 import Container from "@mui/material/Container";
 // import Box from "@mui/material/Box";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function App() {

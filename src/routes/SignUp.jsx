@@ -1,6 +1,3 @@
-import NavBar from "../components/NavBar";
-
-import Tickets from "../components/Tickets";
 import Container from "@mui/material/Container";
 
 import {
@@ -13,8 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Copyright } from "@mui/icons-material";
 
 function App() {
   const handleSubmit = (event) => {
