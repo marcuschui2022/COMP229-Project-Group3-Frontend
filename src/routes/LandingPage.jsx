@@ -25,23 +25,17 @@ function App() {
             </Button>
           </Link>
 
-          <Button
-            size="large"
-            style={buttonMargin}
-            variant="outlined"
-            href="/login"
-          >
-            Login
-          </Button>
+          <Link to="login">
+            <Button size="large" style={buttonMargin} variant="outlined">
+              Login
+            </Button>
+          </Link>
 
-          <Button
-            size="large"
-            style={buttonMargin}
-            variant="outlined"
-            href="/register"
-          >
-            User Register
-          </Button>
+          <Link to="signup">
+            <Button size="large" style={buttonMargin} variant="outlined">
+              User Register
+            </Button>
+          </Link>
         </Grid>
       </Container>
     </div>

@@ -9,23 +9,36 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Logo from "../assets/logo.jpg";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function MenuAppBar() {
-  const [auth, setAuth] = React.useState(true);
+export default function MenuAppBar({ routeProps }) {
+  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+
+  // let params = useParams();
+
+  // console.log(params);
+  // console.log(routeProps);
+  // const handleChange = (event) => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    navigate("/");
-    // window.location.href = "/";
+    // navigate("/");
     setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+  const handleLogin = () => {
+    // localStorage.clear();
+    navigate("/login");
   };
 
   return (
@@ -58,7 +71,7 @@ export default function MenuAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             INCIDENT MANAGMENT SITE
           </Typography>
-          {auth && (
+          {routeProps && (
             <div>
               <IconButton
                 size="large"
@@ -68,6 +81,7 @@ export default function MenuAppBar() {
                 onClick={handleMenu}
                 color="inherit"
               >
+                {routeProps}
                 <AccountCircle />
               </IconButton>
               <Menu
@@ -85,9 +99,26 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>DashBoard</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                {/* <MenuItem onClick={handleClose}>DashBoard</MenuItem> */}
               </Menu>
+            </div>
+          )}
+          {!routeProps && (
+            <div>
+              {/* <Link to="/login"> */}
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleLogin}
+                color="inherit"
+              >
+                {/* menu */}
+                <AccountCircle />
+              </IconButton>
+              {/* </Link> */}
             </div>
           )}
         </Toolbar>

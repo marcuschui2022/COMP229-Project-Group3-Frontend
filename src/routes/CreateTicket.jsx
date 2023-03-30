@@ -105,6 +105,7 @@ function App() {
                       id="incidentPriority"
                       value={incidentPriority}
                       label="Incident priority"
+                      name="incidentPriority"
                       onChange={handleChangeIncidentPriority}
                     >
                       <MenuItem value={"High"}>High</MenuItem>
@@ -166,18 +167,35 @@ function App() {
 
 export default App;
 
+export async function loader({ params }) {
+  if (!localStorage.getItem("user")) {
+    return redirect("/login");
+  } else {
+    return null;
+  }
+}
+
 export async function action({ request }) {
+  // const errors = {};
   const formData = await request.formData();
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  await fetch(
+  const statesCode = await fetch(
     "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/create-ticket",
     {
       method: "POST",
       body: JSON.stringify(postData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
-  );
-  return redirect("/dashboard");
+  ).then((x) => {
+    return x.status;
+  });
+  if (statesCode === 401) {
+    localStorage.clear();
+    return redirect("/login");
+  } else {
+    return redirect("/dashboard");
+  }
 }

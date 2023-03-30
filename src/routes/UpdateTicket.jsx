@@ -21,36 +21,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 function App() {
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const data = new FormData(event.currentTarget);
-
-    await fetch("/v1/incidentTicket/createticket", {
-      method: "PATCH",
-      body: JSON.stringify({
-        incidentDescription: data.get("incidentDescription"),
-        incidentPriority: incidentPriority,
-        customerInformation: data.get("customerInformation"),
-        incidentNarrative: data.get("incidentNarrative"),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-
-    console.log({
-      incidentDescription: data.get("incidentDescription"),
-      incidentPriority: incidentPriority,
-      customerInformation: data.get("customerInformation"),
-      incidentNarrative: data.get("incidentNarrative"),
-    });
-
-    window.location.href = "/dashboard";
-  };
-
   const ticket = useLoaderData();
 
   const [incidentPriority, setIncidentPriority] = React.useState(
@@ -116,6 +86,7 @@ function App() {
                       value={incidentPriority}
                       label="Incident priority"
                       onChange={handleChangeIncidentPriority}
+                      name="incidentPriority"
                     >
                       <MenuItem value={"High"}>High</MenuItem>
                       <MenuItem value={"Medium"}>Medium</MenuItem>
@@ -178,9 +149,12 @@ function App() {
 export default App;
 
 export async function loader({ params }) {
+  if (!localStorage.getItem("user")) {
+    return redirect("/login");
+  }
   const response = await fetch(
-    // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/64152cbd8992d7999a4d4bd6"
     "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/" +
+      // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/" +
       params.id
   );
 
@@ -193,18 +167,30 @@ export async function action({ request }) {
   const postData = Object.fromEntries(formData); // { body:... , author:... }
 
   console.log(postData);
-  console.log(
-    `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
-  );
-  await fetch(
+  // console.log(
+  //   `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
+  // );
+  // console.log(
+  //   `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
+  // );
+  const statesCode = await fetch(
     `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
+    // `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
     {
       method: "PATCH",
       body: JSON.stringify(postData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
-  );
-  return redirect("/dashboard");
+  ).then((x) => {
+    return x.status;
+  });
+  if (statesCode === 401) {
+    localStorage.clear();
+    return redirect("/login");
+  } else {
+    return redirect("/dashboard");
+  }
 }

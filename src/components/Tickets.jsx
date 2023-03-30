@@ -20,7 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 const columns = [
   {
@@ -113,10 +113,14 @@ export default function StickyHeadTable() {
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
   const navigate = useNavigate();
-
+  // const navigate = useNavigate();
   const handleAlertClickOpen = (id) => {
-    setAlertOpen(true);
-    setDeleteId(id);
+    if (!localStorage.getItem("user")) {
+      navigate("/login");
+    } else {
+      setAlertOpen(true);
+      setDeleteId(id);
+    }
   };
 
   const handleAlertClose = () => {
@@ -124,17 +128,26 @@ export default function StickyHeadTable() {
   };
 
   const handleDelete = async () => {
-    await fetch(
+    const statesCode = await fetch(
       `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/${deleteId}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
-    );
-    setAlertOpen(false);
-    navigate("/dashboard");
+    ).then((x) => {
+      return x.status;
+    });
+    if (statesCode === 401) {
+      localStorage.clear();
+      navigate("/login");
+      // navigate("/dashboard");
+    } else {
+      navigate("/dashboard");
+      setAlertOpen(false);
+    }
     // window.location.href = "/dashboard";
   };
   // console.log("first 2");
@@ -142,40 +155,6 @@ export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   // const [tickets, setTickets] = React.useState([]);
-
-  // React.useEffect(() => {
-  //   // const result = await axios(
-  //   //   "https://comp229-group3-w2023.azurewebsites.net/api/v1/incidentTicket/tickets"
-  //   // );
-
-  //   async function fetchTickets() {
-  //     let res = await fetch("https://comp229-group3-w2023.azurewebsites.net/api/v1/incidentTicket/tickets")
-  //       .then((response) => response.json())
-  //       .then((result) => result)
-  //       .catch((error) => console.log("error", error));
-  //     console.log(res);
-  //     if (res) {
-  //       setTickets(res);
-  //     }
-  //   }
-
-  //   fetchTickets();
-  //   // console.log(result);
-  //   // await fetch("https://comp229-group3-w2023.azurewebsites.net/api/users/", {
-  //   //     method: "POST",
-  //   //     body: JSON.stringify({
-  //   //       incidentDescription: data.get("incidentDescription"),
-  //   //       incidentPriority: incidentPriority,
-  //   //       customerInformation: data.get("customerInformation"),
-  //   //       incidentNarrative: data.get("incidentNarrative"),
-  //   //     }),
-  //   //     headers: {
-  //   //       "Content-Type": "application/json",
-  //   //     },
-  //   //   })
-  //   //     .then((response) => response.json())
-  //   //     .then((data) => console.log(data));
-  // }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

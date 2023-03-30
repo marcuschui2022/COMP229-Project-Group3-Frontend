@@ -10,17 +10,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  Form,
-  Link,
-  redirect,
-  useActionData,
-  useOutletContext,
-} from "react-router-dom";
-import React, { useContext } from "react";
+import { Form, Link, redirect, useActionData } from "react-router-dom";
 function App() {
   const errors = useActionData();
-  console.log(errors);
+
+  // console.log(localStorage.setItem("user", "marucs"));
+  // console.log(localStorage.getItem("user"));
+  // console.log(localStorage.getItem("token"));
+  // console.log(errors);
 
   return (
     <div className="App">
@@ -36,7 +33,7 @@ function App() {
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Login
             </Typography>
             <Box
               // component="form"
@@ -66,18 +63,7 @@ function App() {
                   autoComplete="family-name"
                 />
               </Grid> */}
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    type="email"
-                    // autoComplete={false}
-                    // autoComplete="email"
-                  />
-                </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -107,7 +93,7 @@ function App() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    Sign Up
+                    Login
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
@@ -134,12 +120,14 @@ function App() {
 export default App;
 
 export async function action({ request }) {
+  // console.log(`first`);
+  // return null;
+  const formData = await request.formData();
   const errors = {};
 
-  const formData = await request.formData();
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  const statusCode = await fetch(
-    "https://comp229-group3-w2023.azurewebsites.net/api/auth/signup",
+  const result = await fetch(
+    "https://comp229-group3-w2023.azurewebsites.net/api/auth/login",
     {
       method: "POST",
       body: JSON.stringify(postData),
@@ -147,15 +135,24 @@ export async function action({ request }) {
         "Content-Type": "application/json",
       },
     }
-  ).then((x) => {
-    return x.status;
-  });
-  if (statusCode !== 202) {
-    // return redirect("/");
-    errors.msg = "Username or email exists.";
+  )
+    .then(async (x) => await x.json())
+    .then((x) => ({
+      username: x.body.username,
+      token: x.token,
+    }))
+    .catch((err) => null);
 
+  console.log(result);
+  // return null;
+  if (result === null) {
+    errors.msg = "Incorrect username or password. ";
     return errors;
   } else {
-    return redirect("/");
+    localStorage.setItem("user", result.username);
+    localStorage.setItem("token", result.token);
+    // console.log(result.body);
+    return redirect("/dashboard");
+    // return null;
   }
 }
