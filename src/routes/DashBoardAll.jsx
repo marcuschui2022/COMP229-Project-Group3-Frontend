@@ -67,6 +67,14 @@ function App() {
 export default App;
 
 export async function loader() {
+  if (
+    !localStorage.getItem("user") ||
+    !localStorage.getItem("token") ||
+    !localStorage.getItem("nickname")
+  ) {
+    localStorage.clear();
+  }
+
   const response = await fetch(
     // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets"
     "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/ticketsall"
