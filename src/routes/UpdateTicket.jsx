@@ -278,8 +278,8 @@ export async function loader({ params }) {
     return redirect("/login");
   }
   const response = await fetch(
-    "http://localhost:3000/api/incident-ticket/tickets/" +
-      // "http://localhost:3000/api/incident-ticket/tickets/" +
+    "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/" +
+      // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/" +
       params.id
   );
 
@@ -293,14 +293,14 @@ export async function action({ request }) {
 
   console.log(postData);
   // console.log(
-  //   `http://localhost:3000/api/incident-ticket/update-ticket/${postData._id}`
+  //   `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
   // );
   // console.log(
-  //   `http://localhost:3000/api/incident-ticket/update-ticket/${postData._id}`
+  //   `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`
   // );
   const statesCode = await fetch(
-    `http://localhost:3000/api/incident-ticket/update-ticket/${postData._id}`,
-    // `http://localhost:3000/api/incident-ticket/update-ticket/${postData._id}`,
+    `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
+    // `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/update-ticket/${postData._id}`,
     {
       method: "PATCH",
       body: JSON.stringify(postData),

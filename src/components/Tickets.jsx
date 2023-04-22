@@ -133,7 +133,7 @@ export default function StickyHeadTable() {
 
   const handleDelete = async () => {
     const statesCode = await fetch(
-      `http://localhost:3000/api/incident-ticket/tickets/${deleteId}`,
+      `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/${deleteId}`,
       {
         method: "DELETE",
         headers: {

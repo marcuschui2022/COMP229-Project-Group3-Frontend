@@ -65,8 +65,8 @@ export default App;
 
 export async function loader() {
   const response = await fetch(
-    // "http://localhost:3000/api/incident-ticket/tickets"
-    "http://localhost:3000/api/incident-ticket/ticketsall"
+    // "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets"
+    "https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/ticketsall"
   );
   const resData = await response.json();
 

@@ -126,13 +126,16 @@ export async function action({ request }) {
   const errors = {};
 
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  const result = await fetch("http://localhost:3000/api/auth/login", {
-    method: "POST",
-    body: JSON.stringify(postData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
+  const result = await fetch(
+    "https://comp229-group3-w2023.azurewebsites.net/api/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
     .then(async (x) => await x.json())
     .then((x) => ({
       username: x.body.username,

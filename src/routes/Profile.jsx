@@ -108,13 +108,16 @@ export async function loader({ params }) {
   if (!localStorage.getItem("user")) {
     return redirect("/login");
   }
-  const response = await fetch("http://localhost:3000/api/auth/profile/", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const response = await fetch(
+    "https://comp229-group3-w2023.azurewebsites.net/api/auth/profile/",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 
   // const resData = await response.json();
   return response;
@@ -127,14 +130,17 @@ export async function action({ request }) {
   const errors = {};
 
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  const result = await fetch("http://localhost:3000/api/auth/profile/", {
-    method: "PATCH",
-    body: JSON.stringify(postData),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  })
+  const result = await fetch(
+    "https://comp229-group3-w2023.azurewebsites.net/api/auth/profile/",
+    {
+      method: "PATCH",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  )
     // .then(async (x) => await x.json())
     // .then((x) => ({
     //   username: x.body.username,
