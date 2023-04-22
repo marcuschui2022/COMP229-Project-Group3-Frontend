@@ -168,7 +168,12 @@ function App() {
 export default App;
 
 export async function loader({ params }) {
-  if (!localStorage.getItem("user")) {
+  if (
+    !localStorage.getItem("user") ||
+    !localStorage.getItem("token") ||
+    !localStorage.getItem("nickname")
+  ) {
+    localStorage.clear();
     return redirect("/login");
   } else {
     return null;

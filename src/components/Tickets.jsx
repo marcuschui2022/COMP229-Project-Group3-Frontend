@@ -119,7 +119,12 @@ export default function StickyHeadTable() {
   const navigate = useNavigate();
   // const navigate = useNavigate();
   const handleAlertClickOpen = (id) => {
-    if (!localStorage.getItem("user")) {
+    if (
+      !localStorage.getItem("user") ||
+      !localStorage.getItem("token") ||
+      !localStorage.getItem("nickname")
+    ) {
+      localStorage.clear();
       navigate("/login");
     } else {
       setAlertOpen(true);
