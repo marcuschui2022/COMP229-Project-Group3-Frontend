@@ -223,7 +223,7 @@ function App() {
                   </Typography>
                   <br />
                   <Typography>
-                    Incident priotiy: {x.incidentPriotiy}
+                    Incident priotiy: {x.incidentPriority}
                   </Typography>{" "}
                   <br />
                   <Typography>Status: {x.status ?? "New"}</Typography> <br />
