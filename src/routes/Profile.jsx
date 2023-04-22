@@ -10,9 +10,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Form, Link, redirect, useActionData } from "react-router-dom";
+import {
+  Form,
+  Link,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router-dom";
 function App() {
+  const profile = useLoaderData();
   const errors = useActionData();
+
+  // console.log(profile);
 
   // console.log(localStorage.setItem("user", "marucs"));
   // console.log(localStorage.getItem("user"));
@@ -31,9 +40,12 @@ function App() {
               alignItems: "center",
             }}
           >
+            <Typography component="h1" variant="h5">
+              Profile
+            </Typography>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
             <Typography component="h1" variant="h5">
-              Login
+              User name: {profile.username}
             </Typography>
             <Box
               // component="form"
@@ -42,50 +54,23 @@ function App() {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
+                <input
+                  id="_id"
+                  name="_id"
+                  defaultValue={profile._id}
+                  type="hidden"
+                />
                 <Grid item xs={12} sm={12}>
                   <TextField
-                    autoComplete="given-name"
-                    name="username"
+                    name="nickname"
                     required
                     fullWidth
-                    id="username"
-                    label="Username"
-                    autoFocus
+                    id="nickname"
+                    label="NICKNAME"
+                    defaultValue={profile.nickname}
                   />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid> */}
 
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    // autoComplete="new-password"
-                  />
-                </Grid>
-                {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
-              </Grid>
-              {errors && <span style={{ color: "red" }}>{errors?.msg}</span>}
-              <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Button
                     type="submit"
@@ -93,11 +78,11 @@ function App() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    Login
+                    Update Profile
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <Link to="/">
+                  <Link to="/dashboard">
                     <Button
                       type="button"
                       fullWidth
@@ -119,6 +104,22 @@ function App() {
 
 export default App;
 
+export async function loader({ params }) {
+  if (!localStorage.getItem("user")) {
+    return redirect("/login");
+  }
+  const response = await fetch("http://localhost:3000/api/auth/profile/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  // const resData = await response.json();
+  return response;
+}
+
 export async function action({ request }) {
   // console.log(`first`);
   // return null;
@@ -126,32 +127,40 @@ export async function action({ request }) {
   const errors = {};
 
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  const result = await fetch("http://localhost:3000/api/auth/login", {
-    method: "POST",
+  const result = await fetch("http://localhost:3000/api/auth/profile/", {
+    method: "PATCH",
     body: JSON.stringify(postData),
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   })
-    .then(async (x) => await x.json())
-    .then((x) => ({
-      username: x.body.username,
-      nickname: x.body.nickname,
-      token: x.token,
-    }))
+    // .then(async (x) => await x.json())
+    // .then((x) => ({
+    //   username: x.body.username,
+    //   token: x.token,
+    // }))
+    // .then((x) => {
+    //   console.log(x);
+    //   return x;
+    // })
     .catch((err) => null);
 
-  // console.log(result);
-  // return null;
-  if (result === null) {
-    errors.msg = "Incorrect username or password. ";
-    return errors;
-  } else {
-    localStorage.setItem("user", result.username);
-    localStorage.setItem("nickname", result.nickname);
-    localStorage.setItem("token", result.token);
-    // console.log(result.body);
-    return redirect("/dashboard");
-    // return null;
+  if (result.statusText === "OK") {
+    // console.log("first");
+    // console.log(postData);
+    localStorage.setItem("nickname", postData.nickname);
   }
+  return redirect("/dashboard");
+  // return null;
+  // if (result === null) {
+  //   errors.msg = "Incorrect username or password. ";
+  //   return errors;
+  // } else {
+  //   localStorage.setItem("user", result.username);
+  //   localStorage.setItem("token", result.token);
+  //   // console.log(result.body);
+  //   return redirect("/dashboard");
+  //   // return null;
+  // }
 }

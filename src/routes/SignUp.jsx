@@ -138,16 +138,13 @@ export async function action({ request }) {
 
   const formData = await request.formData();
   const postData = Object.fromEntries(formData); // { body:... , author:... }
-  const statusCode = await fetch(
-    "https://comp229-group3-w2023.azurewebsites.net/api/auth/signup",
-    {
-      method: "POST",
-      body: JSON.stringify(postData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((x) => {
+  const statusCode = await fetch("http://localhost:3000/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify(postData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((x) => {
     return x.status;
   });
   if (statusCode !== 202) {

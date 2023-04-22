@@ -17,7 +17,15 @@ import {
 import LandingPage from "./routes/LandingPage";
 import SignUp, { action as postNewUser } from "./routes/SignUp";
 import Login, { action as postLogin } from "./routes/Login";
+import Profile, {
+  loader as profileLoader,
+  action as updateProfile,
+} from "./routes/Profile";
+
 import Dashboard, { loader as ticketsLoader } from "./routes/Dashboard";
+import DashboardAll, {
+  loader as allticketsLoader,
+} from "./routes/DashBoardAll";
 import CreateTicket, {
   action as postNewTicket,
   loader as createTickerLoader,
@@ -48,6 +56,16 @@ const router = createBrowserRouter([
       { path: "/", element: <LandingPage /> },
       { path: "/dashboard", element: <Dashboard />, loader: ticketsLoader },
       {
+        path: "/dashboard-all",
+        element: <DashboardAll />,
+        loader: allticketsLoader,
+      },
+      // {
+      //   path: "/dashboardall",
+      //   element: <DashboardAll />,
+      //   loader: ticketsAllLoader,
+      // },
+      {
         path: "/create-ticket",
         element: <CreateTicket />,
         loader: createTickerLoader,
@@ -68,6 +86,12 @@ const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
         action: postLogin,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+        loader: profileLoader,
+        action: updateProfile,
       },
     ],
   },

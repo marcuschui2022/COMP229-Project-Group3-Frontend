@@ -18,9 +18,11 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import FiberNewIcon from "@mui/icons-material/FiberNew";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Link, redirect } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const columns = [
   {
@@ -31,6 +33,7 @@ const columns = [
     // format: (value) => value.toFixed(2),
   },
   { id: "incidentDescription", label: "Incident Description" },
+  { id: "status", label: "Status" },
   { id: "incidentPriority", label: "Incident priority" },
   //   {
   //     id: "population",
@@ -110,6 +113,7 @@ function createData(
 
 export default function StickyHeadTable() {
   const tickets = useLoaderData();
+  // console.log(tickets);
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
   const navigate = useNavigate();
@@ -129,7 +133,7 @@ export default function StickyHeadTable() {
 
   const handleDelete = async () => {
     const statesCode = await fetch(
-      `https://comp229-group3-w2023.azurewebsites.net/api/incident-ticket/tickets/${deleteId}`,
+      `http://localhost:3000/api/incident-ticket/tickets/${deleteId}`,
       {
         method: "DELETE",
         headers: {
@@ -187,19 +191,26 @@ export default function StickyHeadTable() {
             {tickets
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, i) => {
+                // console.log(row);
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                     {columns.map((column, i) => {
                       const value = row[column.id];
-                      //   console.log(column.id);
+                      // console.log(column);
                       return (
                         <TableCell key={i} align={column.align}>
-                          {column.id === "recordNumber" && (
+                          {/* {column.id === "recordNumber" && (
                             <IconButton>
-                              <InfoIcon />
+                              <FiberNewIcon />
                             </IconButton>
-                          )}
-                          {column.id === "_id" && (
+                          )} */}
+                          {/* {row.status === "Pending" && (
+                            <IconButton>
+                              <FiberNewIcon />
+                            </IconButton>
+                          )} */}
+
+                          {row.status !== "Closed" && column.id === "_id" && (
                             <Link to={`/update-ticket/${value}`}>
                               <IconButton>
                                 <EditIcon />
@@ -207,13 +218,22 @@ export default function StickyHeadTable() {
                             </Link>
                           )}
 
-                          {column.id === "_id" && (
+                          {row.status !== "Closed" && column.id === "_id" && (
                             <IconButton
                               onClick={() => handleAlertClickOpen(value)}
                             >
                               <DeleteForeverIcon />
                             </IconButton>
                           )}
+
+                          {row.status === "Closed" && column.id === "_id" && (
+                            <Link to={`/update-ticket/${value}`}>
+                              <IconButton>
+                                <VisibilityIcon />
+                              </IconButton>
+                            </Link>
+                          )}
+
                           {/* {column.id === "_id" && (
                             <IconButton href={`/updateticket/${value}`}>
                               delete
@@ -223,7 +243,12 @@ export default function StickyHeadTable() {
                           {/* {column.format && typeof value === "number"
                             ? column.format(value)
                             : value} */}
-                          {column.id !== "_id" && value}
+                          {column.id !== "_id" && value !== "New" && value}
+                          {column.id === "status" && value === "New" && (
+                            <IconButton>
+                              <FiberNewIcon />
+                            </IconButton>
+                          )}
                         </TableCell>
                       );
                     })}

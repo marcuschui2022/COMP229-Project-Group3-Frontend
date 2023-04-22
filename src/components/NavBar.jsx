@@ -100,6 +100,9 @@ export default function MenuAppBar({ routeProps }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={() => navigate("/profile")}>
+                  Profile
+                </MenuItem>
                 {/* <MenuItem onClick={handleClose}>DashBoard</MenuItem> */}
               </Menu>
             </div>

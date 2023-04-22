@@ -39,7 +39,7 @@ function App() {
           </Button>
         </Link>
 
-        <Link to="/dashboard-all">
+        <Link to="/dashboard">
           <Button
             variant="contained"
             style={{
@@ -49,7 +49,7 @@ function App() {
             }}
             // href="/createticket"
           >
-            show all incident(Tickets)
+            hide closed incident(Tickets)
           </Button>
         </Link>
 
@@ -66,7 +66,7 @@ export default App;
 export async function loader() {
   const response = await fetch(
     // "http://localhost:3000/api/incident-ticket/tickets"
-    "http://localhost:3000/api/incident-ticket/tickets"
+    "http://localhost:3000/api/incident-ticket/ticketsall"
   );
   const resData = await response.json();
 
